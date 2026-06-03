@@ -92,8 +92,9 @@ const steps = reactive([
                     </div>
                 </div>
             </div>
-            <div class="flex h-[600px] py-12 pr-[58px] items-center  bg-white w-full flex-col justify-between">
-                <div class="flex justify-center items-center h-full">
+            <div
+                :class="`flex h-[600px] py-12 pr-[58px] items-center  bg-white w-full flex-col ${isEnd ? 'justify-center' : 'justify-between'}`">
+                <div class="flex w-full justify-center">
                     <slot></slot>
                 </div>
                 <footer class="flex justify-end items-center w-full">

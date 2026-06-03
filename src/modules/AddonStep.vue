@@ -18,7 +18,7 @@ const toggleAddon = (id: string, checked: boolean) => {
 </script>
 
 <template>
-    <div class="grid gap-300 md:gap-400">
+    <div class="grid gap-300 md:gap-400 w-full">
         <StepHeader title="Pick add-ons" subtitle="Add-ons help enhance your gaming experience." />
         <div class="grid gap-200">
             <AddonCard v-for="addon in addonOptions" :key="addon.id" :id="addon.id" :title="addon.title"

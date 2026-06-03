@@ -2,20 +2,51 @@
 import classNames from 'classnames';
 import { formatPrice } from '../utils/price';
 
-const { selected, icon, isYearly, price, label } = defineProps<{
+const { selected, icon, isYearly, price, label, id } = defineProps<{
     selected: boolean;
     icon: string;
     isYearly: boolean;
     price: number;
     label: string;
     id: string;
+    tabindex?: number;
 }>()
 
-defineEmits(['onCardSelect'])
+const emit = defineEmits(['onCardSelect'])
+
+const select = () => emit('onCardSelect', id);
+
+const onKeydown = (event: KeyboardEvent) => {
+    const el = event.currentTarget as HTMLElement;
+    switch (event.key) {
+        case 'Enter':
+        case ' ':
+            event.preventDefault();
+            select();
+            break;
+        case 'ArrowRight':
+        case 'ArrowDown': {
+            event.preventDefault();
+            const next = el.nextElementSibling as HTMLElement | null;
+            next?.focus();
+            next?.click();
+            break;
+        }
+        case 'ArrowLeft':
+        case 'ArrowUp': {
+            event.preventDefault();
+            const prev = el.previousElementSibling as HTMLElement | null;
+            prev?.focus();
+            prev?.click();
+            break;
+        }
+    }
+}
 </script>
 
 <template>
-    <div @click="$emit('onCardSelect', id)" :class="classNames('cursor-pointer flex flex-row lg:flex-col md:justify-between md:items-center lg:items-start gap-200 p-200 rounded-lg border border-purple-200 active:border-purple-600', {
+    <div @click="select" @keydown="onKeydown" role="radio" :aria-checked="selected" :aria-label="label"
+        :tabindex="tabindex ?? 0" :class="classNames('cursor-pointer flex flex-row lg:flex-col md:justify-between md:items-center lg:items-start gap-200 p-200 rounded-lg border border-purple-200 active:border-purple-600 outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2', {
         'bg-blue-50 border-purple-600': selected,
     })">
         <div class="flex gap-200 lg:flex-col items-center lg:items-start">

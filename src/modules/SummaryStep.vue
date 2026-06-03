@@ -9,6 +9,8 @@ const { formData } = defineProps<{
     formData: FormData;
 }>();
 
+defineEmits(["changePlan"]);
+
 const selectedPlan = computed(() => {
     if (!formData.plan) return null;
     const plan = planOptions.find(p => p.id === formData.plan);
@@ -28,20 +30,22 @@ const totalPrice = computed(() => {
     return selectedAddons.value.reduce((sum, addon) => sum + addon.price, planPrice);
 });
 
-const period = computed(() => periodLabel(formData.yearly));
 const longPeriod = computed(() => periodLabel(formData.yearly, true));
 </script>
 
 <template>
-    <div class="grid gap-300 md:gap-400">
+    <div class="grid gap-300 md:gap-400 w-full">
         <StepHeader title="Finishing up" subtitle="Double-check everything looks OK before confirming." />
         <div class="p-200 rounded-lg bg-blue-50 grid gap-200">
             <div class="flex items-center justify-between">
                 <div>
-                    <h4 class="text-preset-4-medium text-blue-950">{{ `${selectedPlan?.label} (${formData.yearly ? 'Yearly' : 'Monthly'})` }}</h4>
-                    <span class="text-preset-4 text-gray">Change</span>
+                    <h4 class="text-preset-4-medium text-blue-950">{{ `${selectedPlan?.label} (${formData.yearly ?
+                        'Yearly' : 'Monthly'})` }}</h4>
+                    <button type="button" class="text-preset-4 text-gray underline hover:text-purple-600 cursor-pointer rounded outline-none focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2"
+                        @click="$emit('changePlan')">Change</button>
                 </div>
-                <span class="text-preset-4-bold text-blue-950">{{ selectedPlan ? formatPrice(selectedPlan.price, formData.yearly) : '' }}</span>
+                <span class="text-preset-4-bold text-blue-950">{{ selectedPlan ? formatPrice(selectedPlan.price,
+                    formData.yearly) : '' }}</span>
             </div>
             <div class="h-px w-full opacity-20 bg-gray" />
             <div class="grid gap-200">

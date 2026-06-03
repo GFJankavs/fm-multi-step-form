@@ -76,25 +76,31 @@ const formData = reactive<FormData>({
   addons: []
 })
 
-const handleStepChange = (value: number) => {
+const handleNextStep = (value: number) => {
   const result = validateForm(currentStep.value, formData);
   if (!result) return;
-  if (currentStep.value === 4) {
+  if (currentStep.value === 4 && isSuccess.value === false) {
     isSuccess.value = true;
   } else {
     currentStep.value = value;
   }
 }
 
+const handleStepBack = (value: number) => {
+  currentStep.value = value;
+}
+
 </script>
 
 <template>
-  <StepWrapper :current-step="currentStep" @on-next-step="handleStepChange" @on-step-back="handleStepChange"
+  <StepWrapper :current-step="currentStep" @on-next-step="handleNextStep" @on-step-back="handleStepBack"
     :next-disabled="!canProceed(currentStep, formData)" :is-end="isSuccess">
     <PersonalStep v-if="currentStep === 1 && !isSuccess" v-model="formData.personal" :errors="errors.personal" />
     <PlanStep v-if="currentStep === 2 && !isSuccess" v-model:plan="formData.plan" v-model:yearly="formData.yearly" />
     <AddonStep v-if="currentStep === 3 && !isSuccess" v-model:addons="formData.addons" :is-yearly="formData.yearly" />
-    <SummaryStep v-if="currentStep === 4 && !isSuccess" :formData="formData" />
+    <SummaryStep v-if="currentStep === 4 && !isSuccess" :formData="formData" @change-plan="() => {
+      currentStep = 2
+    }" />
     <SuccessStep v-if="isSuccess" />
   </StepWrapper>
 </template>

@@ -24,6 +24,7 @@ const model = defineModel<string>();
         <input :required="required" :id="id" v-model="model" :type="type" :placeholder="placeholder"
             :aria-invalid="!!error" :aria-describedby="error ? `${id}-error` : undefined" :class="[
                 'py-100 px-200 rounded-lg border caret-blue-950 text-blue-950 outline-none text-preset-3-medium',
+                'focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-1',
                 error ? 'border-red-500' : 'border-purple-200 focus:border-purple-600',
             ]" />
     </div>
