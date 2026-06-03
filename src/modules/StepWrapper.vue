@@ -7,6 +7,8 @@ import { reactive } from "vue";
 
 const { currentStep } = defineProps<{
     currentStep: number;
+    nextDisabled: boolean;
+    isEnd: boolean;
 }>()
 
 const emit = defineEmits(['onStepBack', 'onNextStep']);
@@ -60,12 +62,12 @@ const steps = reactive([
                     </div>
                 </div>
             </div>
-            <footer class="p-200 flex justify-end items-center w-full bg-white">
+            <footer class="p-200 flex justify-end items-center w-full bg-white" v-if="!isEnd">
                 <ButtonComponent @on-button-click="() => handleStepChange('back')"
                     v-if="currentStep > 1 && currentStep < 5" variant="additional" class="mr-auto">Go
                     Back</ButtonComponent>
                 <ButtonComponent @on-button-click="() => handleStepChange('next')" v-if="currentStep < 5"
-                    variant="primary">Next Step</ButtonComponent>
+                    variant="primary" :disabled="nextDisabled">Next Step</ButtonComponent>
             </footer>
         </div>
         <div
@@ -90,14 +92,18 @@ const steps = reactive([
                     </div>
                 </div>
             </div>
-            <div class="flex h-[600px] py-12 pr-[58px]  bg-white w-full flex-col justify-between">
-                <slot></slot>
+            <div class="flex h-[600px] py-12 pr-[58px] items-center  bg-white w-full flex-col justify-between">
+                <div class="flex justify-center items-center h-full">
+                    <slot></slot>
+                </div>
                 <footer class="flex justify-end items-center w-full">
                     <ButtonComponent @on-button-click="() => handleStepChange('back')"
-                        v-if="currentStep > 1 && currentStep < 5" variant="additional" class="mr-auto">Go
+                        v-if="currentStep > 1 && currentStep < 5 && !isEnd" variant="additional" class="mr-auto">Go
                         Back</ButtonComponent>
-                    <ButtonComponent @on-button-click="() => handleStepChange('next')" v-if="currentStep < 5"
-                        variant="primary">Next Step</ButtonComponent>
+                    <ButtonComponent @on-button-click="() => handleStepChange('next')" v-if="currentStep < 4 && !isEnd"
+                        variant="primary" :disabled="nextDisabled">Next Step</ButtonComponent>
+                    <ButtonComponent @on-button-click="() => handleStepChange('next')"
+                        v-if="currentStep === 4 && !isEnd" variant="secondary">Confirm</ButtonComponent>
                 </footer>
             </div>
         </div>

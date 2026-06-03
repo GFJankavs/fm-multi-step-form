@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import classNames from 'classnames';
+import { formatPrice } from '../utils/price';
 
 const { selected, icon, isYearly, price, label } = defineProps<{
     selected: boolean;
@@ -21,7 +22,7 @@ defineEmits(['onCardSelect'])
             <img :src="icon" alt="Arcade" class="w-10 h-10">
             <div class="flex flex-col justify-center">
                 <h3 class="text-preset-3-medium text-blue-950">{{ label }}</h3>
-                <span class="text-preset-4 text-gray">{{ `$${price}/${isYearly ? "yr" : "mo"}` }}</span>
+                <span class="text-preset-4 text-gray">{{ formatPrice(price, isYearly) }}</span>
                 <span v-if="isYearly" class="inline-block md:hidden lg:inline-block text-preset-5 text-blue-950">2
                     months
                     free</span>

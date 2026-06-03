@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import InputComponent from '../components/InputComponent.vue';
+import StepHeader from '../components/StepHeader.vue';
 import type { PersonalInfo } from '../types/form';
+
+const props = defineProps<{
+    errors: {
+        name: string;
+        email: string;
+        phone: string;
+    }
+}>();
 
 const personal = defineModel<PersonalInfo>({ required: true });
 
@@ -8,18 +17,14 @@ const personal = defineModel<PersonalInfo>({ required: true });
 
 <template>
     <div class="grid gap-300 md:gap-400">
-        <div class="grid gap-100">
-            <h1 class="text-preset-2 inline-block md:hidden text-blue-950">Personal info</h1>
-            <h1 class="text-preset-1 hidden md:inline-block text-blue-950">Personal info</h1>
-            <p class="text-gray text-preset-3">Please provide your name, email address, and phone number.</p>
-        </div>
+        <StepHeader title="Personal info" subtitle="Please provide your name, email address, and phone number." />
         <div class="grid gap-300">
             <InputComponent v-model="personal.name" type="text" required label="Name" id="name"
-                placeholder="e.g. Stephen King" />
+                placeholder="e.g. Stephen King" :error="errors.name.length > 0 ? errors.name : undefined" />
             <InputComponent v-model="personal.email" type="email" required label="Email" id="email"
-                placeholder="e.g. stephenking@lorem.com" />
+                placeholder="e.g. stephenking@lorem.com" :error="errors.email.length > 0 ? errors.email : undefined" />
             <InputComponent v-model="personal.phone" type="phone" required label="Phone" id="phone"
-                placeholder="e.g. +1 234 567 890" />
+                placeholder="e.g. +1 234 567 890" :error="errors.phone.length > 0 ? errors.phone : undefined" />
         </div>
     </div>
 </template>

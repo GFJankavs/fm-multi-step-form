@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import classNames from 'classnames';
 import CheckboxComponent from './CheckboxComponent.vue';
+import { formatPrice } from '../utils/price';
 
 const { id, title, description, price, isYearly = false } = defineProps<{
     id: string;
@@ -25,6 +26,6 @@ const selected = defineModel<boolean>({ default: false });
                 <p class="text-preset-4 text-gray">{{ description }}</p>
             </div>
         </div>
-        <span class="text-preset-4 text-purple-600">+${{ price }}/{{ isYearly ? 'yr' : 'mo' }}</span>
+        <span class="text-preset-4 text-purple-600">+{{ formatPrice(price, isYearly) }}</span>
     </div>
 </template>
